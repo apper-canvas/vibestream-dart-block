@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import ApperIcon from "@/components/ApperIcon"
-import ArtistCard from "@/components/molecules/ArtistCard"
-import Loading from "@/components/ui/Loading"
-import Error from "@/components/ui/Error"
-import Empty from "@/components/ui/Empty"
-import { getFeatured } from "@/services/api/artistService"
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { getFeatured } from "@/services/api/artistService";
+import ApperIcon from "@/components/ApperIcon";
+import Loading from "@/components/ui/Loading";
+import Empty from "@/components/ui/Empty";
+import Error from "@/components/ui/Error";
+import ArtistCard from "@/components/molecules/ArtistCard";
+
 
 const FeaturedArtists = ({ onViewArtist }) => {
   const [artists, setArtists] = useState([])
