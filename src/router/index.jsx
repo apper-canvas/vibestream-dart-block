@@ -116,8 +116,8 @@ const routes = [
     path: "/",
     element: <Root />,
     children: [
-      {
-        path: "/",
+{
+        path: "",
         element: <Layout />,
         children: mainRoutes
       },
