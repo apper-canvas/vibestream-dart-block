@@ -422,10 +422,9 @@ class PlaylistService {
       }
 
       return true
-    } catch (error) {
+} catch (error) {
       console.error("Error in playlistService.reorderSongs:", error)
       throw error
-throw error
     }
   }
 }
