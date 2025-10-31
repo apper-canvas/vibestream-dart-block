@@ -5,9 +5,7 @@ import ChartItem from "@/components/molecules/ChartItem"
 import Loading from "@/components/ui/Loading"
 import Error from "@/components/ui/Error"
 import Empty from "@/components/ui/Empty"
-import SongService from "@/services/api/songService"
-
-const songService = new SongService()
+import * as songService from "@/services/api/songService"
 const TopCharts = ({ onPlay, currentSong, isPlaying }) => {
   const [charts, setCharts] = useState([])
   const [loading, setLoading] = useState(true)
