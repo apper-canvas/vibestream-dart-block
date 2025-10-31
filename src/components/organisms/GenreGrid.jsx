@@ -6,7 +6,7 @@ import Loading from "@/components/ui/Loading"
 import Error from "@/components/ui/Error"
 import GenreService from "@/services/api/genreService"
 
-const genreService = new GenreService()
+const genreService = GenreService
 const GenreGrid = ({ onSelectGenre }) => {
   const [genres, setGenres] = useState([])
   const [loading, setLoading] = useState(true)
