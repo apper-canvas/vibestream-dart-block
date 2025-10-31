@@ -5,9 +5,8 @@ import ArtistCard from "@/components/molecules/ArtistCard"
 import Loading from "@/components/ui/Loading"
 import Error from "@/components/ui/Error"
 import Empty from "@/components/ui/Empty"
-import ArtistService from "@/services/api/artistService"
+import { getFeatured } from "@/services/api/artistService"
 
-const artistService = new ArtistService()
 const FeaturedArtists = ({ onViewArtist }) => {
   const [artists, setArtists] = useState([])
   const [loading, setLoading] = useState(true)
@@ -17,7 +16,7 @@ const FeaturedArtists = ({ onViewArtist }) => {
     try {
       setLoading(true)
       setError("")
-      const data = await artistService.getFeatured(6)
+const data = await getFeatured(6)
       setArtists(data)
     } catch (err) {
       setError("Failed to load featured artists. Please try again.")
