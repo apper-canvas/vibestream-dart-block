@@ -1,7 +1,7 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect, useState, createContext, useContext } from "react"
-import { setUser, clearUser, setInitialized } from "@/store/userSlice"
+import { setUser, clearUser, setInitialized } from "@/store/slices/userSlice"
 import { getRouteConfig, verifyRouteAccess } from "@/router/route.utils"
 import { getApperClient } from "@/services/apperClient"
 
