@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom"
 import { Suspense, lazy } from "react"
 import Layout from "@/components/organisms/Layout"
+import Root from "@/layouts/Root"
 
 const Home = lazy(() => import("@/components/pages/Home"))
 const Playlists = lazy(() => import("@/components/pages/Playlists"))
@@ -8,7 +9,10 @@ const LikedSongs = lazy(() => import("@/components/pages/LikedSongs"))
 const Following = lazy(() => import("@/components/pages/Following"))
 const PlaylistDetail = lazy(() => import("@/components/pages/PlaylistDetail"))
 const NotFound = lazy(() => import("@/components/pages/NotFound"))
-
+const Login = lazy(() => import("@/components/pages/Login"))
+const Signup = lazy(() => import("@/components/pages/Signup"))
+const Callback = lazy(() => import("@/components/pages/Callback"))
+const ErrorPage = lazy(() => import("@/components/pages/ErrorPage"))
 const LoadingFallback = () => (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-surface">
     <div className="text-center space-y-4">
@@ -72,12 +76,53 @@ const mainRoutes = [
   }
 ]
 
-const routes = [
+const authRoutes = [
   {
-    path: "/",
-    element: <Layout />,
-    children: mainRoutes
+    path: "login",
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <Login />
+      </Suspense>
+    )
+  },
+  {
+    path: "signup",
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <Signup />
+      </Suspense>
+    )
+  },
+  {
+    path: "callback",
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <Callback />
+      </Suspense>
+    )
+  },
+  {
+    path: "error",
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <ErrorPage />
+      </Suspense>
+    )
   }
 ]
 
+const routes = [
+  {
+    path: "/",
+    element: <Root />,
+    children: [
+      {
+        path: "/",
+        element: <Layout />,
+        children: mainRoutes
+      },
+      ...authRoutes
+    ]
+  }
+]
 export const router = createBrowserRouter(routes)

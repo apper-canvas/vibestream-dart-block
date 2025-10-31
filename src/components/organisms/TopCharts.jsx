@@ -5,8 +5,9 @@ import ChartItem from "@/components/molecules/ChartItem"
 import Loading from "@/components/ui/Loading"
 import Error from "@/components/ui/Error"
 import Empty from "@/components/ui/Empty"
-import songService from "@/services/api/songService"
+import SongService from "@/services/api/songService"
 
+const songService = new SongService()
 const TopCharts = ({ onPlay, currentSong, isPlaying }) => {
   const [charts, setCharts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -94,8 +95,8 @@ const TopCharts = ({ onPlay, currentSong, isPlaying }) => {
           className="space-y-4"
         >
           {charts.map((chartEntry, index) => (
-            <motion.div
-              key={chartEntry.song.id}
+<motion.div
+              key={chartEntry.song.Id}
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -104,7 +105,7 @@ const TopCharts = ({ onPlay, currentSong, isPlaying }) => {
               <ChartItem 
                 chartEntry={chartEntry}
                 onPlay={onPlay}
-                isPlaying={currentSong?.id === chartEntry.song.id && isPlaying}
+                isPlaying={currentSong?.Id === chartEntry.song.Id && isPlaying}
               />
             </motion.div>
           ))}

@@ -12,10 +12,9 @@ import usePlayback from "@/hooks/usePlayback";
 const Home = () => {
   const playback = usePlayback()
 
-const handlePlay = (song) => {
+  const handlePlay = (song) => {
     playback.playSong(song)
   }
-
   const handleSelectGenre = (genre) => {
     toast.info(`Browsing ${genre.name} music coming soon!`)
   }
@@ -25,7 +24,7 @@ const handleViewPlaylist = (playlistId) => {
   }
 
 const handleViewArtist = (artist) => {
-    toast.info(`Viewing artist "${artist.name || 'Unknown Artist'}" coming soon!`)
+    toast.info(`Viewing artist "${artist.name_c || 'Unknown Artist'}" coming soon!`)
   }
 
   const handleSignUp = () => {
@@ -44,13 +43,13 @@ const handleViewArtist = (artist) => {
         <Hero />
         <GenreGrid onSelectGenre={handleSelectGenre} />
         <TrendingPlaylists onViewPlaylist={handleViewPlaylist} />
-        <TopCharts 
+<TopCharts 
           onPlay={handlePlay}
           currentSong={playback.currentSong}
           isPlaying={playback.isPlaying}
         />
         <FeaturedArtists onViewArtist={handleViewArtist} />
-        <SearchSection 
+<SearchSection 
           onPlay={handlePlay}
           currentSong={playback.currentSong}
           isPlaying={playback.isPlaying}

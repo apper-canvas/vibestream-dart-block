@@ -4,8 +4,9 @@ import ApperIcon from "@/components/ApperIcon"
 import GenreCard from "@/components/molecules/GenreCard"
 import Loading from "@/components/ui/Loading"
 import Error from "@/components/ui/Error"
-import genreService from "@/services/api/genreService"
+import GenreService from "@/services/api/genreService"
 
+const genreService = new GenreService()
 const GenreGrid = ({ onSelectGenre }) => {
   const [genres, setGenres] = useState([])
   const [loading, setLoading] = useState(true)
@@ -85,7 +86,7 @@ const GenreGrid = ({ onSelectGenre }) => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <GenreCard 
+<GenreCard 
                 genre={genre} 
                 onSelectGenre={onSelectGenre}
               />

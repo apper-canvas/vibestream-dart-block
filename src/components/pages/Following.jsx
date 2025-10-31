@@ -7,23 +7,23 @@ import ArtistCard from "@/components/molecules/ArtistCard"
 import Loading from "@/components/ui/Loading"
 import Empty from "@/components/ui/Empty"
 import Error from "@/components/ui/Error"
-import artistService from "@/services/api/artistService"
+import ArtistService from "@/services/api/artistService"
 
+const artistService = new ArtistService()
 const Following = () => {
-  const user = useSelector((state) => state.user.profile)
+  const user = useSelector((state) => state.user.user)
   const [followedArtists, setFollowedArtists] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-
   useEffect(() => {
     loadFollowedArtists()
   }, [user])
 
-  const loadFollowedArtists = async () => {
+const loadFollowedArtists = async () => {
     try {
       setLoading(true)
       setError(null)
-      const data = await artistService.getFollowedArtists(user.id)
+      const data = await artistService.getFollowedArtists(user.userId)
       setFollowedArtists(data)
     } catch (err) {
       setError("Failed to load followed artists")
@@ -33,15 +33,15 @@ const Following = () => {
     }
   }
 
-  const handleViewArtist = (artist) => {
-    toast.info(`Artist page for ${artist.name} coming soon!`)
+const handleViewArtist = (artist) => {
+    toast.info(`Artist page for ${artist.name_c} coming soon!`)
   }
 
-  const handleFollow = async (artist) => {
+const handleFollow = async (artist) => {
     try {
-      await artistService.toggleFollow(artist.id, user.id)
+      await artistService.toggleFollow(artist.Id, user.userId)
       loadFollowedArtists()
-      toast.success(`Unfollowed ${artist.name}`)
+      toast.success(`Unfollowed ${artist.name_c}`)
     } catch (err) {
       toast.error("Failed to update following")
     }
@@ -82,8 +82,8 @@ const Following = () => {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           >
             {followedArtists.map((artist) => (
-              <ArtistCard
-                key={artist.id}
+<ArtistCard
+                key={artist.Id}
                 artist={artist}
                 onViewArtist={() => handleViewArtist(artist)}
                 onFollow={() => handleFollow(artist)}

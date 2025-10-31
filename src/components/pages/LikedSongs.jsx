@@ -1,31 +1,35 @@
-import { useState, useEffect } from "react"
-import { useSelector } from "react-redux"
-import { toast } from "react-toastify"
-import { motion } from "framer-motion"
-import ApperIcon from "@/components/ApperIcon"
-import SongCard from "@/components/molecules/SongCard"
-import Loading from "@/components/ui/Loading"
-import Empty from "@/components/ui/Empty"
-import Error from "@/components/ui/Error"
-import usePlayback from "@/hooks/usePlayback"
-import songService from "@/services/api/songService"
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { motion } from "framer-motion";
+import SongService from "@/services/api/songService";
+import ApperIcon from "@/components/ApperIcon";
+import Loading from "@/components/ui/Loading";
+import Empty from "@/components/ui/Empty";
+import Error from "@/components/ui/Error";
+import SongCard from "@/components/molecules/SongCard";
+import usePlayback from "@/hooks/usePlayback";
+
+const songService = new SongService()
 
 const LikedSongs = () => {
-  const user = useSelector((state) => state.user.profile)
+  const user = useSelector((state) => state.user.user)
   const playback = usePlayback()
   const [likedSongs, setLikedSongs] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    loadLikedSongs()
+    if (user) {
+      loadLikedSongs()
+    }
   }, [user])
 
-  const loadLikedSongs = async () => {
+const loadLikedSongs = async () => {
     try {
       setLoading(true)
       setError(null)
-      const data = await songService.getLikedSongs(user.id)
+      const data = await songService.getLikedSongs(user.userId)
       setLikedSongs(data)
     } catch (err) {
       setError("Failed to load liked songs")
@@ -35,13 +39,13 @@ const LikedSongs = () => {
     }
   }
 
-  const handlePlay = (song) => {
+const handlePlay = (song) => {
     playback.playSong(song)
   }
 
   const handleLike = async (song) => {
     try {
-      await songService.toggleLike(song.id, user.id)
+      await songService.toggleLike(song.Id, user.userId)
       loadLikedSongs()
       toast.success("Removed from Liked Songs")
     } catch (err) {
@@ -84,12 +88,12 @@ const LikedSongs = () => {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           >
             {likedSongs.map((song) => (
-              <SongCard
-                key={song.id}
+<SongCard
+                key={song.Id}
                 song={song}
                 onPlay={() => handlePlay(song)}
                 onLike={() => handleLike(song)}
-                isPlaying={playback.currentSong?.id === song.id && playback.isPlaying}
+                isPlaying={playback.currentSong?.Id === song.Id && playback.isPlaying}
                 isLiked={true}
               />
             ))}

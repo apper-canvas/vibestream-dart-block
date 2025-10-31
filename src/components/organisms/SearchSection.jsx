@@ -1,11 +1,13 @@
-import { useState, useCallback } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import ApperIcon from "@/components/ApperIcon"
-import SearchBar from "@/components/molecules/SearchBar"
-import SongCard from "@/components/molecules/SongCard"
-import Loading from "@/components/ui/Loading"
-import Empty from "@/components/ui/Empty"
-import songService from "@/services/api/songService"
+import React, { useCallback, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import SongService from "@/services/api/songService";
+import ApperIcon from "@/components/ApperIcon";
+import Loading from "@/components/ui/Loading";
+import Empty from "@/components/ui/Empty";
+import SongCard from "@/components/molecules/SongCard";
+import SearchBar from "@/components/molecules/SearchBar";
+
+const songService = new SongService()
 
 const SearchSection = ({ onPlay, currentSong, isPlaying }) => {
   const [searchQuery, setSearchQuery] = useState("")
@@ -113,18 +115,19 @@ const SearchSection = ({ onPlay, currentSong, isPlaying }) => {
                 </h3>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {searchResults.map((song, index) => (
                   <motion.div
-                    key={song.id}
+                    key={song.Id}
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
                   >
                     <SongCard
                       song={song}
                       onPlay={onPlay}
-                      isPlaying={currentSong?.id === song.id && isPlaying}
+                      isPlaying={currentSong?.Id === song.Id && isPlaying}
                       showPlayCount
                     />
                   </motion.div>

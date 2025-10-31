@@ -10,12 +10,14 @@ import Loading from "@/components/ui/Loading"
 import Empty from "@/components/ui/Empty"
 import Error from "@/components/ui/Error"
 import usePlayback from "@/hooks/usePlayback"
-import playlistService from "@/services/api/playlistService"
-import songService from "@/services/api/songService"
+import PlaylistService from "@/services/api/playlistService"
+import SongService from "@/services/api/songService"
 
+const playlistService = new PlaylistService()
+const songService = new SongService()
 const PlaylistDetail = () => {
   const { id } = useParams()
-  const user = useSelector((state) => state.user.profile)
+  const user = useSelector((state) => state.user.user)
   const navigate = useNavigate()
   const playback = usePlayback()
   const [playlist, setPlaylist] = useState(null)
@@ -23,7 +25,6 @@ const PlaylistDetail = () => {
   const [error, setError] = useState(null)
   const [isEditing, setIsEditing] = useState(false)
   const [editForm, setEditForm] = useState({ name: "", description: "" })
-
   useEffect(() => {
     loadPlaylist()
   }, [id])
@@ -35,10 +36,9 @@ const PlaylistDetail = () => {
       const data = await playlistService.getById(parseInt(id))
       if (!data) {
         setError("Playlist not found")
-        return
-      }
+}
       setPlaylist(data)
-      setEditForm({ name: data.name, description: data.description })
+      setEditForm({ name: data.name_c, description: data.description_c })
     } catch (err) {
       setError("Failed to load playlist")
       toast.error("Failed to load playlist")
@@ -51,18 +51,18 @@ const PlaylistDetail = () => {
     playback.playSong(song)
   }
 
-  const handleLike = async (song) => {
+const handleLike = async (song) => {
     try {
-      const isLiked = await songService.toggleLike(song.id, user.id)
+      const isLiked = await songService.toggleLike(song.Id, user.userId)
       toast.success(isLiked ? "Added to Liked Songs" : "Removed from Liked Songs")
     } catch (err) {
       toast.error("Failed to update liked songs")
     }
   }
 
-  const handleRemoveSong = async (songId) => {
+const handleRemoveSong = async (songId) => {
     try {
-      await playlistService.removeSong(playlist.id, songId)
+      await playlistService.removeSong(playlist.Id, songId)
       toast.success("Song removed from playlist")
       loadPlaylist()
     } catch (err) {
@@ -70,9 +70,9 @@ const PlaylistDetail = () => {
     }
   }
 
-  const handleSaveEdit = async () => {
+const handleSaveEdit = async () => {
     try {
-      await playlistService.update(playlist.id, editForm)
+      await playlistService.update(playlist.Id, editForm)
       toast.success("Playlist updated successfully")
       setIsEditing(false)
       loadPlaylist()
@@ -81,13 +81,13 @@ const PlaylistDetail = () => {
     }
   }
 
-  const handleDelete = async () => {
-    if (!confirm(`Are you sure you want to delete "${playlist.name}"?`)) {
+const handleDelete = async () => {
+    if (!confirm(`Are you sure you want to delete "${playlist.name_c}"?`)) {
       return
     }
 
     try {
-      await playlistService.delete(playlist.id)
+      await playlistService.delete(playlist.Id)
       toast.success("Playlist deleted successfully")
       navigate("/playlists")
     } catch (err) {
@@ -107,12 +107,12 @@ const PlaylistDetail = () => {
           <motion.img
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            src={playlist.coverImage}
-            alt={playlist.name}
+src={playlist.cover_image_c}
+            alt={playlist.name_c}
             className="w-52 h-52 rounded-lg shadow-2xl"
           />
-          <div className="flex-1 pb-4">
-            <p className="text-sm text-gray-400 uppercase tracking-wide mb-2">Playlist</p>
+          <div className="flex flex-col justify-end flex-1">
+            <span className="text-sm font-medium text-gray-400 mb-2">PLAYLIST</span>
             {isEditing ? (
               <input
                 value={editForm.name}
@@ -121,9 +121,9 @@ const PlaylistDetail = () => {
               />
             ) : (
               <h1 className="text-5xl font-display font-bold text-white mb-4">
-                {playlist.name}
+                {playlist.name_c}
               </h1>
-            )}
+)}
             {isEditing ? (
               <textarea
                 value={editForm.description}
@@ -132,10 +132,10 @@ const PlaylistDetail = () => {
                 rows={2}
               />
             ) : (
-              <p className="text-gray-300 mb-4">{playlist.description}</p>
+              <p className="text-gray-300 mb-4">{playlist.description_c}</p>
             )}
             <div className="flex items-center space-x-4 text-sm text-gray-400">
-              <span>{user.name}</span>
+              <span>{user.name || user.emailAddress}</span>
               <span>•</span>
               <span>{playlist.songs.length} songs</span>
             </div>
@@ -197,17 +197,17 @@ const PlaylistDetail = () => {
             animate={{ opacity: 1, y: 0 }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           >
-            {playlist.songs.map((song) => (
-              <div key={song.id} className="relative">
+{playlist.songs.map((song) => (
+              <div key={song.Id} className="relative">
                 <SongCard
                   song={song}
                   onPlay={() => handlePlay(song)}
                   onLike={() => handleLike(song)}
-                  isPlaying={playback.currentSong?.id === song.id && playback.isPlaying}
-                  isLiked={songService.isLiked(song.id, user.id)}
+                  isPlaying={playback.currentSong?.Id === song.Id && playback.isPlaying}
+                  isLiked={false}
                 />
                 <button
-                  onClick={() => handleRemoveSong(song.id)}
+                  onClick={() => handleRemoveSong(song.Id)}
                   className="absolute top-2 right-2 w-8 h-8 rounded-full bg-red-600 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity"
                 >
                   <ApperIcon name="X" size={16} className="text-white" />

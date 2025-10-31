@@ -54,22 +54,22 @@ const MiniPlayer = ({
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             {/* Song Info */}
 <div className="flex items-center space-x-4 min-w-0 flex-1">
-              <img
-                src={currentSong.albumArt}
-                alt={currentSong.album}
+<img
+                src={currentSong.album_art_c}
+                alt={currentSong.album_c}
                 className="w-14 h-14 rounded-lg object-cover shadow-lg"
               />
-              
-              <AudioVisualizer 
-                getFrequencyData={getFrequencyData} 
-                isPlaying={isPlaying}
-              />
-              
-              <div className="min-w-0 flex-1">
-                <h4 className="text-white font-medium truncate hover:text-primary transition-colors cursor-pointer">
-                  {currentSong.title}
-                </h4>
-                <p className="text-gray-400 text-sm truncate">{currentSong.artist}</p>
+            </div>
+
+            {/* Song Info */}
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center space-x-3">
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-white font-medium truncate hover:text-primary transition-colors cursor-pointer">
+                    {currentSong.Name}
+                  </h4>
+                  <p className="text-gray-400 text-sm truncate">{currentSong.artist_c}</p>
+                </div>
               </div>
             </div>
 

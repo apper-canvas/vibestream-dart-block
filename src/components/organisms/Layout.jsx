@@ -24,7 +24,7 @@ const Layout = () => {
               </h1>
             </div>
 
-            {user && <ProfileMenu user={user} />}
+{user?.user && <ProfileMenu user={user.user} />}
           </div>
         </header>
 

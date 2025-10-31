@@ -5,8 +5,9 @@ import ArtistCard from "@/components/molecules/ArtistCard"
 import Loading from "@/components/ui/Loading"
 import Error from "@/components/ui/Error"
 import Empty from "@/components/ui/Empty"
-import artistService from "@/services/api/artistService"
+import ArtistService from "@/services/api/artistService"
 
+const artistService = new ArtistService()
 const FeaturedArtists = ({ onViewArtist }) => {
   const [artists, setArtists] = useState([])
   const [loading, setLoading] = useState(true)
@@ -93,9 +94,9 @@ const FeaturedArtists = ({ onViewArtist }) => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {artists.map((artist, index) => (
+{artists.map((artist, index) => (
             <motion.div
-              key={artist.id}
+              key={artist.Id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

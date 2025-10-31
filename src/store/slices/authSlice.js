@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  isAuthenticated: true,
-  token: 'mock-premium-token',
+  isAuthenticated: false,
+  token: null,
   loading: false,
   error: null
 }

@@ -7,10 +7,11 @@ import Button from "@/components/atoms/Button"
 import Input from "@/components/atoms/Input"
 import Textarea from "@/components/atoms/Textarea"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/atoms/Card"
-import playlistService from "@/services/api/playlistService"
+import PlaylistService from "@/services/api/playlistService"
 
+const playlistService = new PlaylistService()
 const CreatePlaylistModal = ({ isOpen, onClose }) => {
-  const user = useSelector((state) => state.user.profile)
+  const user = useSelector((state) => state.user.user)
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
@@ -18,7 +19,6 @@ const CreatePlaylistModal = ({ isOpen, onClose }) => {
     coverImage: ""
   })
   const [imagePreview, setImagePreview] = useState(null)
-
   const handleImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
@@ -40,10 +40,11 @@ const CreatePlaylistModal = ({ isOpen, onClose }) => {
     }
 
     setLoading(true)
-    try {
+try {
       await playlistService.create({
-        ...formData,
-        userId: user.id,
+        name: formData.name,
+        description: formData.description,
+        userId: user.userId,
         coverImage: formData.coverImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(formData.name)}&background=1DB954&color=fff&size=400`
       })
       

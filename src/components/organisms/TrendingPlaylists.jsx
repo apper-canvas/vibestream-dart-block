@@ -5,7 +5,9 @@ import PlaylistCard from "@/components/molecules/PlaylistCard"
 import Loading from "@/components/ui/Loading"
 import Error from "@/components/ui/Error"
 import Empty from "@/components/ui/Empty"
-import playlistService from "@/services/api/playlistService"
+import PlaylistService from "@/services/api/playlistService"
+
+const playlistService = new PlaylistService()
 
 const TrendingPlaylists = ({ onViewPlaylist }) => {
   const [playlists, setPlaylists] = useState([])
@@ -94,15 +96,15 @@ const TrendingPlaylists = ({ onViewPlaylist }) => {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {playlists.map((playlist, index) => (
-            <motion.div
-              key={playlist.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+<motion.div
+              key={playlist.Id}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <PlaylistCard 
-                playlist={playlist} 
+                playlist={playlist}
                 onViewPlaylist={onViewPlaylist}
               />
             </motion.div>

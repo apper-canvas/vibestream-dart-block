@@ -10,26 +10,26 @@ import CreatePlaylistModal from "@/components/organisms/CreatePlaylistModal"
 import Loading from "@/components/ui/Loading"
 import Empty from "@/components/ui/Empty"
 import Error from "@/components/ui/Error"
-import playlistService from "@/services/api/playlistService"
+import PlaylistService from "@/services/api/playlistService"
 
+const playlistService = new PlaylistService()
 const Playlists = () => {
-  const user = useSelector((state) => state.user.profile)
   const navigate = useNavigate()
+  const user = useSelector((state) => state.user.user)
   const [playlists, setPlaylists] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [deletingId, setDeletingId] = useState(null)
-
   useEffect(() => {
     loadPlaylists()
   }, [user])
 
-  const loadPlaylists = async () => {
+const loadPlaylists = async () => {
     try {
       setLoading(true)
       setError(null)
-      const data = await playlistService.getUserPlaylists(user.id)
+      const data = await playlistService.getUserPlaylists(user.userId)
       setPlaylists(data)
     } catch (err) {
       setError("Failed to load playlists")
@@ -39,22 +39,22 @@ const Playlists = () => {
     }
   }
 
-  const handleViewPlaylist = (playlist) => {
-    navigate(`/playlists/${playlist.id}`)
+const handleViewPlaylist = (playlist) => {
+    navigate(`/playlists/${playlist.Id}`)
   }
 
   const handleEditPlaylist = (playlist) => {
-    navigate(`/playlists/${playlist.id}`)
+    navigate(`/playlists/${playlist.Id}`)
   }
 
-  const handleDeletePlaylist = async (playlist) => {
-    if (!confirm(`Are you sure you want to delete "${playlist.name}"?`)) {
+const handleDeletePlaylist = async (playlist) => {
+    if (!confirm(`Are you sure you want to delete "${playlist.name_c}"?`)) {
       return
     }
 
-    setDeletingId(playlist.id)
+    setDeletingId(playlist.Id)
     try {
-      await playlistService.delete(playlist.id)
+      await playlistService.delete(playlist.Id)
       toast.success("Playlist deleted successfully")
       loadPlaylists()
     } catch (err) {
@@ -109,11 +109,11 @@ const Playlists = () => {
             {playlists.map((playlist) => (
               <div key={playlist.id} className="relative">
                 <PlaylistCard
-                  playlist={playlist}
+playlist={playlist}
                   onViewPlaylist={() => handleViewPlaylist(playlist)}
                   onEdit={() => handleEditPlaylist(playlist)}
                   onDelete={() => handleDeletePlaylist(playlist)}
-                  isDeleting={deletingId === playlist.id}
+                  isDeleting={deletingId === playlist.Id}
                 />
               </div>
             ))}
