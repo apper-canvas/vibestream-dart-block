@@ -1,15 +1,13 @@
-import { useState } from "react"
-import { useSelector } from "react-redux"
-import { motion, AnimatePresence } from "framer-motion"
-import { toast } from "react-toastify"
-import ApperIcon from "@/components/ApperIcon"
-import Button from "@/components/atoms/Button"
-import Input from "@/components/atoms/Input"
-import Textarea from "@/components/atoms/Textarea"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/atoms/Card"
-import PlaylistService from "@/services/api/playlistService"
-
-const playlistService = new PlaylistService()
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/atoms/Card";
+import PlaylistService from "@/services/api/playlistService";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
+import Textarea from "@/components/atoms/Textarea";
 const CreatePlaylistModal = ({ isOpen, onClose }) => {
   const user = useSelector((state) => state.user.user)
   const [loading, setLoading] = useState(false)
@@ -39,9 +37,9 @@ const CreatePlaylistModal = ({ isOpen, onClose }) => {
       return
     }
 
-    setLoading(true)
-try {
-      await playlistService.create({
+setLoading(true)
+    try {
+      await PlaylistService.create({
         name: formData.name,
         description: formData.description,
         userId: user.userId,
