@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { getFeatured } from "@/services/api/artistService";
+import artistService from "@/services/api/artistService";
 import ApperIcon from "@/components/ApperIcon";
 import Loading from "@/components/ui/Loading";
 import Empty from "@/components/ui/Empty";
@@ -17,7 +17,7 @@ const FeaturedArtists = ({ onViewArtist }) => {
     try {
       setLoading(true)
       setError("")
-const data = await getFeatured(6)
+const data = await artistService.getFeatured(6)
       setArtists(data)
     } catch (err) {
       setError("Failed to load featured artists. Please try again.")
